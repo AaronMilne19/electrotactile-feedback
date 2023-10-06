@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>WidgetApp</Name>
     <RootNamespace>WidgetApp</RootNamespace>
+    <InterpreterId>MSBuild|env|C:\Users\aaron\OneDrive\Documents\Uni\Level 5\Individual Project\Repository\ElectrotactileFeedback\WidgetWebApp\WidgetWebApp.pyproj</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +30,9 @@
       <Project>{6baa2029-bcd3-497c-bb32-32929a200a3e}</Project>
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="MSBuild|env|C:\Users\aaron\OneDrive\Documents\Uni\Level 5\Individual Project\Repository\ElectrotactileFeedback\WidgetWebApp\WidgetWebApp.pyproj" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -12,6 +12,7 @@
     <OutputPath>.</OutputPath>
     <Name>FESDriver</Name>
     <RootNamespace>DeviceDriver</RootNamespace>
+    <InterpreterId>MSBuild|env|C:\Users\aaron\OneDrive\Documents\Uni\Level 5\Individual Project\Repository\ElectrotactileFeedback\WidgetWebApp\WidgetWebApp.pyproj</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +30,9 @@
     <Compile Include="Tacton.py">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="MSBuild|env|C:\Users\aaron\OneDrive\Documents\Uni\Level 5\Individual Project\Repository\ElectrotactileFeedback\WidgetWebApp\WidgetWebApp.pyproj" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
