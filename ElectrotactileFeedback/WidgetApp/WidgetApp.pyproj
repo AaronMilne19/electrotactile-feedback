@@ -24,8 +24,8 @@
     <Compile Include="WidgetApp.py" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DeviceDriver\DeviceDriver.pyproj">
-      <Name>DeviceDriver</Name>
+    <ProjectReference Include="..\FESDriver\FESDriver.pyproj">
+      <Name>FESDriver</Name>
       <Project>{6baa2029-bcd3-497c-bb32-32929a200a3e}</Project>
       <Private>True</Private>
     </ProjectReference>
