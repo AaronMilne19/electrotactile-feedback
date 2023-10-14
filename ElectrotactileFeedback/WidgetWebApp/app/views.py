@@ -4,9 +4,11 @@ Definition of views.
 
 from datetime import datetime
 from django.shortcuts import render
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from .forms import MainForm
+from .helpers import *
 
+#Render the home page
 def home(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
@@ -21,6 +23,17 @@ def home(request):
             'form':form,
         }
     )
+
+#Trigger the device from ajax request
+def trigger(request):
+    if request.method == "POST":
+        widget_type = request.POST.get("widgetType")
+        pulsewidth, frequency, amplitude = lookup_widget_parameters(widget_type)
+        send_pulse(pulsewidth, frequency, amplitude)
+        return JsonResponse({'success': 'true', 'value': 1})
+    
+    return JsonResponse({'success': 'false'})
+
 
 #def contact(request):
 #    """Renders the contact page."""

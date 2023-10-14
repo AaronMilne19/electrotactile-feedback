@@ -33,6 +33,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app\forms.py" />
+    <Compile Include="app\helpers.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\models.py" />
     <Compile Include="app\tests.py" />
     <Compile Include="app\views.py" />
@@ -57,6 +60,7 @@
     <Folder Include="WidgetWebApp\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\static\app\scripts\driver.js" />
     <Content Include="libman.json" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
@@ -104,6 +108,13 @@
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
       <Architecture>X64</Architecture>
     </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FESDriver\FESDriver.pyproj">
+      <Name>FESDriver</Name>
+      <Project>{6baa2029-bcd3-497c-bb32-32929a200a3e}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
