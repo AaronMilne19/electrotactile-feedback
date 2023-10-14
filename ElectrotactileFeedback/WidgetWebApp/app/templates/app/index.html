@@ -10,7 +10,7 @@
     <form class="d-flex p-3 flex-column w-100" action="" method="post">
         {% csrf_token %}
         {% for question in form %}
-        <div class="d-flex p-4 justify-content-around">
+        <div class="d-flex mx-5 p-4 justify-content-between">
             <div>{{ question.label }}:</div>
             {{ question }}
         </div>

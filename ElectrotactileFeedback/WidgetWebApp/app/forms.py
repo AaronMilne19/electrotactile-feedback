@@ -17,6 +17,7 @@ class MainForm(forms.Form):
         ("5", "Five"), 
     )
     radio_options = forms.ChoiceField(choices=options, widget=forms.RadioSelect, label="Try selecting an option")
+    checkbox_options = forms.ChoiceField(choices=options, widget=forms.CheckboxSelectMultiple, label="Try selecting multiple options")
     test = forms.CharField(label="Enter your text", max_length=100)
 
 
