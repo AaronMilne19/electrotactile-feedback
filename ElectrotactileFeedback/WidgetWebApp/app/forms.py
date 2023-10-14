@@ -16,8 +16,8 @@ class MainForm(forms.Form):
         ("4", "Four"), 
         ("5", "Five"), 
     )
-    radio_options = forms.ChoiceField(choices=options, widget=forms.RadioSelect, label="Try selecting an option")
-    checkbox_options = forms.ChoiceField(choices=options, widget=forms.CheckboxSelectMultiple, label="Try selecting multiple options")
+    radio_options = forms.ChoiceField(choices=options, widget=forms.RadioSelect(attrs={'onclick' : "triggerDevice('radio');"}), label="Try selecting an option")
+    checkbox_options = forms.ChoiceField(choices=options, widget=forms.CheckboxSelectMultiple(attrs={'onclick' : "triggerDevice('checkbox');"}), label="Try selecting multiple options")
     test = forms.CharField(label="Enter your text", max_length=100)
 
 

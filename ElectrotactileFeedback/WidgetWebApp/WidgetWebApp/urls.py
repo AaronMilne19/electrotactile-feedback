@@ -11,6 +11,7 @@ from app import forms, views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('trigger/', views.trigger, name="trigger"),
     #path('contact/', views.contact, name='contact'),
     #path('about/', views.about, name='about'),
     path('login/',
