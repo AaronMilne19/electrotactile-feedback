@@ -8,12 +8,10 @@ function triggerDevice(type) {
             'widgetType': type,
         },
         dataType: 'json',
-        success: function (response) {
-            console.log(response);
-        },
         error: function (error) {
             console.log(error);
-            alert('Oops, something went wrong!');
         }
     })
 }
+
+document.getElementsByName("text_input").forEach(i => i.addEventListener("keypress", (event) => { triggerDevice("textInput") }));

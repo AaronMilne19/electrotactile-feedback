@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import FESDriver as fes
 
 #Send pulse to the device with the given parameters
