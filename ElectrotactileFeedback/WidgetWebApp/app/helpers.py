@@ -19,4 +19,5 @@ def send_pulse(pulsewidth, frequency, amplitude, channels=None, port='COM3', bau
 
 #lookup the params for device based on type of widget being used 
 def lookup_widget_parameters(type):
+    #TODO: Add some sort of library of parameters which are custom for each widget
     return 150, 20, 15
