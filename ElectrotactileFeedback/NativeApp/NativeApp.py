@@ -23,7 +23,7 @@ button = Button(text="Click me!", width=25, command=dev.send_pulse).grid(column=
 r+=1
 text_label = ttk.Label(text="Enter some text:").grid(column=0, row=r, padx=10, sticky="e")
 text = ttk.Entry(width=25)
-text.bind("<Key>", dev.send_pulse)
+text.bind("<Key>", lambda e: dev.send_pulse())
 text.grid(column=1, row=2, sticky="w", padx=10)
 
 #Multi select checkboxes
