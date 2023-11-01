@@ -17,18 +17,18 @@ class NativeApp:
     #Title
     def add_title(self):
         self.r += 1
-        title = ttk.Label(master=self.window, text="Electrotactile Feedback!", font=("Arial", 25)).grid(columnspan=2, row=self.r, padx=10, pady=20, sticky="n")
+        ttk.Label(master=self.window, text="Electrotactile Feedback!", font=("Arial", 25)).grid(columnspan=2, row=self.r, padx=10, pady=20, sticky="n")
 
     #Button
     def add_button_widget(self):
         self.r += 1
-        button_label = ttk.Label(master=self.window, text="Try clicking this button:").grid(column=0, row=self.r, padx=10, sticky="e")
-        button = Button(master=self.window, text="Click me!", width=25, command=self.dev.send_pulse).grid(column=1, row=1, sticky="w", padx=10)
+        ttk.Label(master=self.window, text="Try clicking this button:").grid(column=0, row=self.r, padx=10, sticky="e")
+        Button(master=self.window, text="Click me!", width=25, command=self.dev.send_pulse).grid(column=1, row=1, sticky="w", padx=10)
 
     #Text input
     def add_text_widget(self):
         self.r += 1
-        text_label = ttk.Label(master=self.window, text="Enter some text:").grid(column=0, row=self.r, padx=10, sticky="e")
+        ttk.Label(master=self.window, text="Enter some text:").grid(column=0, row=self.r, padx=10, sticky="e")
         text = ttk.Entry(master=self.window, width=25)
         text.bind("<Key>", lambda e: self.dev.send_pulse())
         text.grid(column=1, row=self.r, sticky="w", padx=10)
@@ -37,31 +37,30 @@ class NativeApp:
     #Needs to return the list of v otherwise black box is shown by default on the window
     def add_multi_selection_widget(self):
         self.r += 1
-        multi_select_label = Label(text="Select multiple options:").grid(column=0, row=self.r, padx=10, sticky="e")
+        Label(text="Select multiple options:").grid(column=0, row=self.r, padx=10, sticky="e")
         multi_select_frame = Frame(self.window)
         multi_select_frame.grid(column=1, row=self.r, sticky="w", padx=10)
         v = []
         for i in range(1,6):
             v.append(BooleanVar(value=False))
-            multi_select_i = ttk.Checkbutton(text=i, master=multi_select_frame, variable=v[i-1], command=self.dev.send_pulse).grid(row=0, column=i-1, sticky="w")
+            ttk.Checkbutton(text=i, master=multi_select_frame, variable=v[i-1], command=self.dev.send_pulse).grid(row=0, column=i-1, sticky="w")
         return v
 
     #Radio buttons
     def add_radio_widget(self):
         self.r += 1
-        radio_select_label = Label(text="Select a radio button:").grid(column=0, row=self.r, padx=10, sticky="e")
+        Label(text="Select a radio button:").grid(column=0, row=self.r, padx=10, sticky="e")
         radio_select_frame = Frame(self.window)
         radio_select_frame.grid(column=1, row=self.r, sticky="w", padx=10)
         radio_var = IntVar()
         for i in range(1,6):
-            radio_select_i = ttk.Radiobutton(text=i, value=i, master=radio_select_frame, variable=radio_var, command=self.dev.send_pulse).grid(row=0, column=i-1, sticky="w")
+            ttk.Radiobutton(text=i, value=i, master=radio_select_frame, variable=radio_var, command=self.dev.send_pulse).grid(row=0, column=i-1, sticky="w")
 
     #Device parameter dials
     def add_parameter_dials(self, pw_val=0, fq_val=0, amp_val=0):
         self.r += 1
         dial_frame = Frame(self.window)
         dial_frame.grid(columnspan=2, row=self.r, padx=10, pady=20)
-        params = {"pulsewidth":0, "frequency":0, "amplitude":0}
         pulsewidth_dial = tkd.Dial(master=dial_frame, text="Pulsewidth (μs):\n ", radius=35, scroll_steps=10, integer=True,
                         color_gradient=("green", "red"), unit_length=7, unit_width=7, height=150, width=100, end=200,
                         command=lambda: self.dev.set_pulsewidth(pulsewidth_dial.get()))
