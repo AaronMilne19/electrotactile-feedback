@@ -2,6 +2,7 @@ import serial
 import struct
 import sys
 import time
+import SerialStub, Tacton
 
 class FESDriver(object):
 
