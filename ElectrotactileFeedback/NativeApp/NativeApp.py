@@ -1,29 +1,31 @@
-﻿from doctest import master
+﻿import itertools
 from tkinter import *
 from tkinter import ttk
 import tkdial as tkd
+import random
 from FESService import FESService
 
 class NativeApp:
-    
-    window = Tk()
-    dev = FESService()
-    r = -1
 
-    def __init__(self, title="Electrotactile Feedback", geometry="700x500"):
+    dev = FESService()
+    def __init__(self, user_id:str, descriptor:str=None, title="Electrotactile Feedback", geometry="600x400"):
+        self.user_id = user_id
+        self.descriptor = descriptor
+        self.r = -1
+        self.window = Tk()
         self.window.geometry(geometry)
         self.window.title(title)
 
     #Title
-    def add_title(self):
+    def add_title(self, title:str):
         self.r += 1
-        ttk.Label(master=self.window, text="Electrotactile Feedback!", font=("Arial", 25)).grid(columnspan=2, row=self.r, padx=10, pady=20, sticky="n")
+        ttk.Label(master=self.window, text=title, font=("Arial", 25)).grid(columnspan=2, row=self.r, padx=10, pady=20, sticky="n")
 
     #Button
     def add_button_widget(self):
         self.r += 1
         ttk.Label(master=self.window, text="Try clicking this button:").grid(column=0, row=self.r, padx=10, sticky="e")
-        Button(master=self.window, text="Click me!", width=25, command=self.dev.send_pulse).grid(column=1, row=1, sticky="w", padx=10)
+        Button(master=self.window, text="Click me!", width=25, command=self.dev.send_pulse).grid(column=1, row=self.r, sticky="w", padx=10)
 
     #Text input
     def add_text_widget(self):
@@ -61,21 +63,32 @@ class NativeApp:
         self.r += 1
         dial_frame = Frame(self.window)
         dial_frame.grid(columnspan=2, row=self.r, padx=10, pady=20)
-        pulsewidth_dial = tkd.Dial(master=dial_frame, text="Pulsewidth (μs):\n ", radius=35, scroll_steps=10, integer=True,
+        self.pulsewidth_dial = tkd.Dial(master=dial_frame, text="Pulsewidth (μs):\n ", radius=35, scroll_steps=10, integer=True,
                         color_gradient=("green", "red"), unit_length=7, unit_width=7, height=150, width=100, end=200,
-                        command=lambda: self.dev.set_pulsewidth(pulsewidth_dial.get()))
-        frequency_dial = tkd.Dial(master=dial_frame, text="Frequency (PPS):\n ", radius=35, scroll_steps=5, integer=True,
+                        command=lambda: self.dev.set_pulsewidth(self.pulsewidth_dial.get()))
+        self.frequency_dial = tkd.Dial(master=dial_frame, text="Frequency (PPS):\n ", radius=35, scroll_steps=5, integer=True,
                         color_gradient=("green", "red"), unit_length=7, unit_width=7, height=150, width=100, end=99,
-                        command=lambda: self.dev.set_frequency(frequency_dial.get()))
-        amplitude_dial = tkd.Dial(master=dial_frame, text="Amplitude (mA):\n ", radius=35, scroll_steps=1, integer=True,
+                        command=lambda: self.dev.set_frequency(self.frequency_dial.get()))
+        self.amplitude_dial = tkd.Dial(master=dial_frame, text="Amplitude (mA):\n ", radius=35, scroll_steps=1, integer=True,
                         color_gradient=("green", "red"), unit_length=7, unit_width=7, height=150, width=100, end=20,
-                        command=lambda: self.dev.set_amplitude(amplitude_dial.get()))
-        pulsewidth_dial.set(pw_val)
-        frequency_dial.set(fq_val)
-        amplitude_dial.set(amp_val)
-        pulsewidth_dial.grid(row=0, column=0, padx=10)
-        frequency_dial.grid(row=0, column=1, padx=10)
-        amplitude_dial.grid(row=0, column=2, padx=10)
+                        command=lambda: self.dev.set_amplitude(self.amplitude_dial.get()))
+        self.pulsewidth_dial.set(pw_val)
+        self.frequency_dial.set(fq_val)
+        self.amplitude_dial.set(amp_val)
+        self.pulsewidth_dial.grid(row=0, column=0, padx=10)
+        self.frequency_dial.grid(row=0, column=1, padx=10)
+        self.amplitude_dial.grid(row=0, column=2, padx=10)
+
+    #continue button which will save the results to a text file.
+    def add_save_button(self):
+        self.r +=1
+        Button(master=self.window, text="Save results", command=self.save_results_exit).grid(columnspan=2, row=self.r, sticky="s", pady=20)
+
+    #Save params to output csv file (pulsewidth,frequency,amplitude)
+    def save_results_exit(self):
+        with open(f"results/{self.user_id}-{self.descriptor}.csv", "a") as f:
+            f.write(f"{self.pulsewidth_dial.get()},{self.frequency_dial.get()},{self.amplitude_dial.get()}\n")
+        self.window.destroy()
 
     #Configure window scaling and run the app
     def run(self):
@@ -85,11 +98,34 @@ class NativeApp:
 
 
 ####################
-app = NativeApp()
-app.add_title()
-app.add_button_widget()
-app.add_text_widget()
-v = app.add_multi_selection_widget()
-app.add_radio_widget()
-app.add_parameter_dials()
-app.run()
+
+def add_required_widgets(app:NativeApp, widget:str):
+    if widget == "button":
+        app.add_button_widget()
+    elif widget == "text":
+        app.add_text_widget()
+    elif widget == "radio":
+        app.add_radio_widget()
+    elif widget == "multi":
+        v = app.add_multi_selection_widget()
+        return v
+    else:
+        app.add_button_widget()
+        app.add_text_widget()
+        app.add_radio_widget()
+        v = app.add_multi_selection_widget()
+        return v
+
+user_id = "aaron"
+widgets = ["button", "text", "radio", "multi"]
+presets = [(10,10,10),(20,20,20),(100,20,20)]
+#TODO improve the above
+combinations = list(itertools.product(widgets, presets))
+random.shuffle(combinations)
+for widget, params in combinations:
+    app = NativeApp(user_id, widget)
+    app.add_title("Electrotactile Feedback!")
+    v = add_required_widgets(app, widget)
+    app.add_parameter_dials(*params)
+    app.add_save_button()
+    app.run()
