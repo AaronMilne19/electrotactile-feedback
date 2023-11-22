@@ -121,7 +121,7 @@ def add_required_widgets(app:NativeApp, widget:str):
 user_id = uuid.uuid4()
 print(user_id)
 widgets = ["button", "text", "radio", "multi"]
-presets = [(10,10,10),(20,20,20),(100,20,20)]
+presets = [(150,70,8),(50,50,15),(100,20,20)]
 #TODO improve the above
 combinations = list(itertools.product(widgets, presets))
 random.shuffle(combinations)
