@@ -1,6 +1,7 @@
 ﻿import itertools
 from tkinter import *
 from tkinter import ttk
+import uuid
 import tkdial as tkd
 import random
 from FESService import FESService
@@ -86,7 +87,7 @@ class NativeApp:
 
     #Save params to output csv file (pulsewidth,frequency,amplitude)
     def save_results_exit(self):
-        with open(f"results/{self.user_id}-{self.descriptor}.csv", "a") as f:
+        with open(f"results/{self.user_id}_{self.descriptor}.csv", "a") as f:
             f.write(f"{self.pulsewidth_dial.get()},{self.frequency_dial.get()},{self.amplitude_dial.get()}\n")
         self.window.destroy()
 
@@ -116,12 +117,18 @@ def add_required_widgets(app:NativeApp, widget:str):
         v = app.add_multi_selection_widget()
         return v
 
-user_id = "aaron"
+user_id = uuid.uuid4()
+print(user_id)
 widgets = ["button", "text", "radio", "multi"]
 presets = [(10,10,10),(20,20,20),(100,20,20)]
 #TODO improve the above
 combinations = list(itertools.product(widgets, presets))
 random.shuffle(combinations)
+
+#Save the user id to the file to map to user
+with open("admin/Id_map.csv", "a") as f:
+    f.write(str(user_id))
+
 for widget, params in combinations:
     app = NativeApp(user_id, widget)
     app.add_title("Electrotactile Feedback!")
@@ -129,3 +136,4 @@ for widget, params in combinations:
     app.add_parameter_dials(*params)
     app.add_save_button()
     app.run()
+    
