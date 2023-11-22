@@ -1,4 +1,5 @@
-﻿import itertools
+﻿from datetime import datetime
+import itertools
 from tkinter import *
 from tkinter import ttk
 import uuid
@@ -127,7 +128,7 @@ random.shuffle(combinations)
 
 #Save the user id to the file to map to user
 with open("admin/Id_map.csv", "a") as f:
-    f.write(str(user_id))
+    f.write(f"{datetime.now()},{str(user_id)}\n")
 
 for widget, params in combinations:
     app = NativeApp(user_id, widget)
