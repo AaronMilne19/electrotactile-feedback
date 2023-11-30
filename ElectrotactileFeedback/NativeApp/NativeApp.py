@@ -66,13 +66,13 @@ class NativeApp:
         dial_frame = Frame(self.window)
         dial_frame.grid(columnspan=2, row=self.r, padx=10, pady=20)
         self.pulsewidth_dial = tkd.Dial(master=dial_frame, text="Pulsewidth (μs):\n ", radius=35, scroll_steps=10, integer=True,
-                        color_gradient=("green", "red"), unit_length=7, unit_width=7, height=150, width=100, end=200,
+                        color_gradient=("gray", "gray"), unit_length=7, unit_width=7, height=150, width=100, end=200,
                         command=lambda: self.dev.set_pulsewidth(self.pulsewidth_dial.get()))
         self.frequency_dial = tkd.Dial(master=dial_frame, text="Frequency (PPS):\n ", radius=35, scroll_steps=5, integer=True,
-                        color_gradient=("green", "red"), unit_length=7, unit_width=7, height=150, width=100, end=99,
+                        color_gradient=("gray", "gray"), unit_length=7, unit_width=7, height=150, width=100, end=99,
                         command=lambda: self.dev.set_frequency(self.frequency_dial.get()))
         self.amplitude_dial = tkd.Dial(master=dial_frame, text="Amplitude (mA):\n ", radius=35, scroll_steps=1, integer=True,
-                        color_gradient=("green", "red"), unit_length=7, unit_width=7, height=150, width=100, end=20,
+                        color_gradient=("gray", "gray"), unit_length=7, unit_width=7, height=150, width=100, end=20,
                         command=lambda: self.dev.set_amplitude(self.amplitude_dial.get()))
         self.pulsewidth_dial.set(pw_val)
         self.frequency_dial.set(fq_val)
@@ -88,8 +88,9 @@ class NativeApp:
 
     #Save params to output csv file (pulsewidth,frequency,amplitude)
     def save_results_exit(self):
-        with open(f"results/{self.user_id}_{self.descriptor}.csv", "a") as f:
-            f.write(f"{self.pulsewidth_dial.get()},{self.frequency_dial.get()},{self.amplitude_dial.get()}\n")
+        if self.user_id != None:
+            with open(f"results/{self.user_id}_{self.descriptor}.csv", "a") as f:
+                f.write(f"{self.pulsewidth_dial.get()},{self.frequency_dial.get()},{self.amplitude_dial.get()}\n")
         self.window.destroy()
 
     #Configure window scaling and run the app
@@ -126,9 +127,13 @@ presets = [(150,70,8),(50,50,15),(100,20,20)]
 combinations = list(itertools.product(widgets, presets))
 random.shuffle(combinations)
 
-#Save the user id to the file to map to user
-with open("admin/Id_map.csv", "a") as f:
-    f.write(f"{datetime.now()},{str(user_id)}\n")
+#Create one version of the app which does not save any response - use this as a demonstation
+test_app = NativeApp(None)
+test_app.add_title("Demonstation Window")
+test_app.add_button_widget()
+test_app.add_parameter_dials()
+test_app.add_save_button()
+test_app.run()
 
 for widget, params in combinations:
     app = NativeApp(user_id, widget)
@@ -138,3 +143,6 @@ for widget, params in combinations:
     app.add_save_button()
     app.run()
     
+#Save the user id to the file to map to user
+with open("admin/Id_map.csv", "a") as f:
+    f.write(f"{datetime.now()},{str(user_id)}\n")
