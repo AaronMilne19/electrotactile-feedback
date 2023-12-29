@@ -10,13 +10,17 @@ from FESService import FESService
 class NativeApp:
 
     dev = FESService()
-    def __init__(self, user_id:str, descriptor:str=None, title="Electrotactile Feedback", geometry="600x400"):
+    def __init__(self, user_id:str, descriptor:str=None, title="Electrotactile Feedback", geometry="600x400", result_dir="results"):
+        self.dev.set_pulsewidth(0)
+        self.dev.set_frequency(0)
+        self.dev.set_amplitude(0)
         self.user_id = user_id
         self.descriptor = descriptor
         self.r = -1
         self.window = Tk()
         self.window.geometry(geometry)
         self.window.title(title)
+        self.result_dir = result_dir
 
     #Title
     def add_title(self, title:str):
@@ -81,6 +85,23 @@ class NativeApp:
         self.frequency_dial.grid(row=0, column=1, padx=10)
         self.amplitude_dial.grid(row=0, column=2, padx=10)
 
+    #for phase 2, have pre-defined presets and let users choose the most comforatble one
+    def add_preset_buttons(self, presets):
+        self.r += 1
+        preset_frame = Frame(self.window)
+        preset_frame.grid(columnspan=2, row=self.r, padx=10, pady=20)
+        preset_var = StringVar()
+        preset_var.set(f"{presets[0][0]} {presets[0][1]} {presets[0][2]}")
+        self.set_preset(preset_var)
+        for i, preset in enumerate(presets):
+            ttk.Radiobutton(text=f"Preset {i+1}", value=preset, master=preset_frame, variable=preset_var, command=lambda:self.set_preset(preset_var)).grid(row=0, column=i, sticky="w")
+    
+    def set_preset(self, preset_var:StringVar):
+        pw, fq, amp = preset_var.get().split()
+        self.dev.set_pulsewidth(int(pw))
+        self.dev.set_frequency(int(fq))
+        self.dev.set_amplitude(int(amp))
+
     #continue button which will save the results to a text file.
     def add_save_button(self):
         self.r +=1
@@ -89,8 +110,8 @@ class NativeApp:
     #Save params to output csv file (pulsewidth,frequency,amplitude)
     def save_results_exit(self):
         if self.user_id != None:
-            with open(f"results/{self.user_id}_{self.descriptor}.csv", "a") as f:
-                f.write(f"{self.pulsewidth_dial.get()},{self.frequency_dial.get()},{self.amplitude_dial.get()}\n")
+            with open(f"{self.result_dir}/{self.user_id}_{self.descriptor}.csv", "a") as f:
+                f.write(f"{self.dev.get_pulsewidth()},{self.dev.get_frequency()},{self.dev.get_amplitude()}\n")
         self.window.destroy()
 
     #Configure window scaling and run the app
@@ -119,30 +140,53 @@ def add_required_widgets(app:NativeApp, widget:str):
         v = app.add_multi_selection_widget()
         return v
 
-user_id = uuid.uuid4()
-print(user_id)
-widgets = ["button", "text", "radio", "multi"]
-presets = [(150,70,8),(50,50,15),(100,20,20)]
-#TODO improve the above
-combinations = list(itertools.product(widgets, presets))
-random.shuffle(combinations)
+def run(phase=1):
+    user_id = uuid.uuid4()
+    print(user_id)
+    widgets = ["button", "text", "radio", "multi"]
+    presets = None
 
-#Create one version of the app which does not save any response - use this as a demonstation
-test_app = NativeApp(None)
-test_app.add_title("Demonstation Window")
-test_app.add_button_widget()
-test_app.add_parameter_dials()
-test_app.add_save_button()
-test_app.run()
+    #Create one version of the app which does not save any response - use this as a demonstation
+    test_app = NativeApp(None)
+    test_app.add_title("Demonstation Window")
+    test_app.add_button_widget()
+    if phase == 1:
+        presets = [(150,70,8),(50,50,15),(100,20,20)] #Phase 1 presets (for seeding the dials)
+        test_app.add_parameter_dials()
+    elif phase == 2:
+        #Phase 2 presets based on analysis of phase 1 responses. These are fixed presets
+        presets = [(150,70,8),(50,50,15),(100,20,20)] 
+        test_app.add_preset_buttons(presets)
+    test_app.add_save_button()
+    test_app.run()
 
-for widget, params in combinations:
-    app = NativeApp(user_id, widget)
-    app.add_title("Electrotactile Feedback!")
-    v = add_required_widgets(app, widget)
-    app.add_parameter_dials(*params)
-    app.add_save_button()
-    app.run()
-    
-#Save the user id to the file to map to user
-with open("admin/Id_map.csv", "a") as f:
-    f.write(f"{datetime.now()},{str(user_id)}\n")
+    if phase == 1:
+        combinations = list(itertools.product(widgets, presets))
+        random.shuffle(combinations)
+        for widget, params in combinations:
+            app = NativeApp(user_id, widget)
+            app.add_title("Electrotactile Feedback!")
+            v = add_required_widgets(app, widget)
+            app.add_parameter_dials(*params)
+            app.add_save_button()
+            app.run()
+
+        #Save the user id to the file to map to user
+        with open("admin/Id_map.csv", "a") as f:
+            f.write(f"{datetime.now()},{str(user_id)}\n")
+
+    elif phase == 2:
+        for widget in widgets:
+            app = NativeApp(user_id, widget, result_dir="results2")
+            app.add_title("Electrotactile Feedback!")
+            v = add_required_widgets(app, widget)
+            app.add_preset_buttons(presets)
+            app.add_save_button()
+            app.run()
+
+        with open("admin/Id_map_phase2.csv", "a") as f:
+            f.write(f"{datetime.now()},{str(user_id)}\n")
+
+###########################
+
+run(2) #change the argument here for diffent phase of experiment.

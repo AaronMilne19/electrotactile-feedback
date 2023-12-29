@@ -27,6 +27,16 @@ class FESService:
     def set_amplitude(self, amplitude):
         self.amplitude = amplitude
 
+    #Getters for the params
+    def get_pulsewidth(self):
+        return self.pulsewidth
+    
+    def get_frequency(self):
+        return self.frequency
+    
+    def get_amplitude(self):
+        return self.amplitude
+
     #Send pulse to the device with the given parameters
     def send_pulse(self, channels=None):
         print(f"sending pulsewidth:{self.pulsewidth}, frequency:{self.frequency}, amplitude: {self.amplitude}")
