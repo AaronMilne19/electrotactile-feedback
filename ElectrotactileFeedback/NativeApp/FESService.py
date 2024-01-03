@@ -51,10 +51,5 @@ class FESService:
                 self.device.set_channel_amplitude(channel, self.amplitude)
 
         self.device.reset()
-
-    #lookup the params for device based on type of widget being used 
-    def lookup_widget_parameters(self, type):
-        #TODO: Add some sort of library of parameters which are custom for each widget
-        return 100, 20, 10
     
     
