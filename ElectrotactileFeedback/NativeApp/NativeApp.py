@@ -11,9 +11,7 @@ class NativeApp:
 
     dev = FESService()
     def __init__(self, user_id:str, descriptor:str=None, title="Electrotactile Feedback", geometry="600x400", result_dir="results"):
-        self.dev.set_pulsewidth(0)
-        self.dev.set_frequency(0)
-        self.dev.set_amplitude(0)
+        self.dev.reset_settings()
         self.user_id = user_id
         self.descriptor = descriptor
         self.r = -1
