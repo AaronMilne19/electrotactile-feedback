@@ -177,6 +177,7 @@ def run(phase=1):
 
     elif phase == 2:
         for widget in widgets:
+            random.shuffle(presets)
             app = NativeApp(user_id, widget, result_dir="results2")
             app.add_title("Electrotactile Feedback!")
             v = add_required_widgets(app, widget)
