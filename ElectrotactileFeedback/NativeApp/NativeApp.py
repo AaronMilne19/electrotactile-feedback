@@ -31,7 +31,9 @@ class NativeApp:
     def add_button_widget(self):
         self.r += 1
         ttk.Label(master=self.window, text="Try clicking this button:").grid(column=0, row=self.r, padx=10, sticky="e")
-        Button(master=self.window, text="Click me!", width=25, command=self.dev.send_pulse).grid(column=1, row=self.r, sticky="w", padx=10)
+        button = Button(master=self.window, text="Click me!", width=25, command=self.dev.send_pulse)
+        button.bind("<Button-1>", lambda e: self.dev.send_pulse())
+        button.grid(column=1, row=self.r, sticky="w", padx=10)
 
     #Text input
     def add_text_widget(self):
@@ -51,7 +53,9 @@ class NativeApp:
         v = []
         for i in range(1,6):
             v.append(BooleanVar(value=False))
-            ttk.Checkbutton(text=i, master=multi_select_frame, variable=v[i-1], command=self.dev.send_pulse).grid(row=0, column=i-1, sticky="w")
+            button = ttk.Checkbutton(text=i, master=multi_select_frame, variable=v[i-1], command=self.dev.send_pulse)
+            button.bind("<Button-1>", lambda e: self.dev.send_pulse())
+            button.grid(row=0, column=i-1, sticky="w")
         return v
 
     #Radio buttons
@@ -62,7 +66,9 @@ class NativeApp:
         radio_select_frame.grid(column=1, row=self.r, sticky="w", padx=10)
         radio_var = IntVar()
         for i in range(1,6):
-            ttk.Radiobutton(text=i, value=i, master=radio_select_frame, variable=radio_var, command=self.dev.send_pulse).grid(row=0, column=i-1, sticky="w")
+            button = ttk.Radiobutton(text=i, value=i, master=radio_select_frame, variable=radio_var, command=self.dev.send_pulse)
+            button.bind("<Button-1>", lambda e: self.dev.send_pulse())
+            button.grid(row=0, column=i-1, sticky="w")
 
     #Device parameter dials
     def add_parameter_dials(self, pw_val=0, fq_val=0, amp_val=0):
@@ -155,7 +161,7 @@ def run(phase=1):
         test_app.add_parameter_dials()
     elif phase == 2:
         #Phase 2 presets based on analysis of phase 1 responses. These are fixed presets
-        presets = [(150,70,8),(50,50,15),(100,20,20)] 
+        presets = [(150,70,8),(50,50,15),(100,50,13)] 
         test_app.add_preset_buttons(presets)
     test_app.add_save_button()
     test_app.run()
