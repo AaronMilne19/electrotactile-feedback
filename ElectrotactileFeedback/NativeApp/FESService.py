@@ -15,7 +15,14 @@ class FESService:
     #disconnect from device
     def disconnect_device(self):
         print("Disconnecting from device")
+        self.device.reset()
         self.device.disconnect()
+
+    #Set everything to 0
+    def reset_settings(self):
+        self.device.set_global_pulsewidth(0)
+        self.device.set_global_frequency(0)
+        self.device.set_global_amplitude(0)
        
     #Setters for the params
     def set_pulsewidth(self, pulsewidth):
@@ -50,6 +57,7 @@ class FESService:
                 self.device.set_channel_frequency(channel, self.frequency)
                 self.device.set_channel_amplitude(channel, self.amplitude)
 
-        self.device.reset()
+        #self.device.reset() #TODO: Improve this as device.reset takes too long
+        self.reset_settings()
     
     
