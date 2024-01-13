@@ -158,7 +158,7 @@ def run(phase=1):
         presets = [(150,70,8),(50,50,15),(100,20,20)] #Phase 1 presets (for seeding the dials)
         test_app.add_parameter_dials()
     elif phase == 2:
-        #Phase 2 presets based on analysis of phase 1 responses. These are fixed presets
+        #Phase 2 presets based on analysis of phase 1 responses. These are fixed presets. random for the demo window.
         presets = [(150,70,8),(50,50,15),(100,50,13)] 
         test_app.add_preset_buttons(presets)
     test_app.add_save_button()
@@ -180,7 +180,18 @@ def run(phase=1):
             f.write(f"{datetime.now()},{str(user_id)}\n")
 
     elif phase == 2:
-        for widget in widgets:
+        wid_3 = widgets * 3
+        random.shuffle(wid_3)
+        for widget in wid_3:
+            if widget == "button":
+                presets = [(64, 29, 8), (78, 42, 10), (92, 56, 11), (116, 70, 12), (139, 85, 14)]
+            elif widget == "text":
+                presets = [(59, 20, 8), (78, 34, 9), (97, 49, 11), (118, 59, 12), (139, 70, 14)]
+            elif widget == "multi":
+                presets = [(50, 23, 8), (70, 36, 10), (89, 49, 11), (113, 59, 14), (137, 70, 16)]
+            elif widget == "radio":
+                presets = [(66, 20, 8), (81, 34, 9), (97, 47, 10), (115, 56, 12), (132, 66, 13)]
+
             random.shuffle(presets)
             app = NativeApp(user_id, widget, result_dir="results2")
             app.add_title("Electrotactile Feedback!")
