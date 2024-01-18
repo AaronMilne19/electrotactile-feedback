@@ -22,6 +22,10 @@ class NativeApp:
         self.phase = phase
         self.attempted_presets=[]
 
+    #Alter background colour
+    def edit_bg_colour(self, colour:str):
+        self.window.configure(background=colour)
+
     #Title
     def add_title(self, title:str):
         self.r += 1
@@ -216,6 +220,16 @@ def run(phase=1):
             app.add_preset_buttons(presets)
             app.add_save_button()
             app.run()
+
+        #TODO: Add another iteration where the user ranks their preference of presets.
+        app = NativeApp(user_id=None, phase=2)
+        app.edit_bg_colour('orange')
+        app.add_title("Please Rank Your Favourite Presets.")
+        app.add_button_widget()
+        presets = get_presets(2, "button")
+        app.add_preset_buttons(presets)
+        app.add_save_button()
+        app.run()
 
         with open("admin/Id_map_phase2.csv", "a") as f:
             f.write(f"{datetime.now()},{str(user_id)}\n")
