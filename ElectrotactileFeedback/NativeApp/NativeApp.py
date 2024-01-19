@@ -10,10 +10,8 @@ from FESService import FESService
 class NativeApp:
 
     dev = FESService()
-    def __init__(self, user_id:str, descriptor:str=None, title="Electrotactile Feedback", geometry="600x400", result_dir="results"):
-        self.dev.set_pulsewidth(0)
-        self.dev.set_frequency(0)
-        self.dev.set_amplitude(0)
+    def __init__(self, user_id:str, descriptor:str=None, title="Electrotactile Feedback", geometry="600x400", result_dir="results", phase=1):
+        self.dev.reset_settings()
         self.user_id = user_id
         self.descriptor = descriptor
         self.r = -1
@@ -21,6 +19,12 @@ class NativeApp:
         self.window.geometry(geometry)
         self.window.title(title)
         self.result_dir = result_dir
+        self.phase = phase
+        self.attempted_presets=[]
+
+    #Alter background colour
+    def edit_bg_colour(self, colour:str):
+        self.window.configure(background=colour)
 
     #Title
     def add_title(self, title:str):
@@ -31,7 +35,9 @@ class NativeApp:
     def add_button_widget(self):
         self.r += 1
         ttk.Label(master=self.window, text="Try clicking this button:").grid(column=0, row=self.r, padx=10, sticky="e")
-        Button(master=self.window, text="Click me!", width=25, command=self.dev.send_pulse).grid(column=1, row=self.r, sticky="w", padx=10)
+        button = Button(master=self.window, text="Click me!", width=25, command=self.dev.send_pulse)
+        button.bind("<Button-1>", lambda e: self.dev.send_pulse())
+        button.grid(column=1, row=self.r, sticky="w", padx=10)
 
     #Text input
     def add_text_widget(self):
@@ -51,7 +57,9 @@ class NativeApp:
         v = []
         for i in range(1,6):
             v.append(BooleanVar(value=False))
-            ttk.Checkbutton(text=i, master=multi_select_frame, variable=v[i-1], command=self.dev.send_pulse).grid(row=0, column=i-1, sticky="w")
+            button = ttk.Checkbutton(text=i, master=multi_select_frame, variable=v[i-1], command=self.dev.send_pulse)
+            button.bind("<Button-1>", lambda e: self.dev.send_pulse())
+            button.grid(row=0, column=i-1, sticky="w")
         return v
 
     #Radio buttons
@@ -62,7 +70,9 @@ class NativeApp:
         radio_select_frame.grid(column=1, row=self.r, sticky="w", padx=10)
         radio_var = IntVar()
         for i in range(1,6):
-            ttk.Radiobutton(text=i, value=i, master=radio_select_frame, variable=radio_var, command=self.dev.send_pulse).grid(row=0, column=i-1, sticky="w")
+            button = ttk.Radiobutton(text=i, value=i, master=radio_select_frame, variable=radio_var, command=self.dev.send_pulse)
+            button.bind("<Button-1>", lambda e: self.dev.send_pulse())
+            button.grid(row=0, column=i-1, sticky="w")
 
     #Device parameter dials
     def add_parameter_dials(self, pw_val=0, fq_val=0, amp_val=0):
@@ -92,12 +102,17 @@ class NativeApp:
         preset_frame.grid(columnspan=2, row=self.r, padx=10, pady=20)
         preset_var = StringVar()
         preset_var.set(f"{presets[0][0]} {presets[0][1]} {presets[0][2]}")
-        self.set_preset(preset_var)
+        self.set_preset(preset_var, len(presets))
         for i, preset in enumerate(presets):
-            ttk.Radiobutton(text=f"Preset {i+1}", value=preset, master=preset_frame, variable=preset_var, command=lambda:self.set_preset(preset_var)).grid(row=0, column=i, sticky="w")
+            ttk.Radiobutton(text=f"Preset {i+1}", value=preset, master=preset_frame, variable=preset_var, command=lambda:self.set_preset(preset_var, len(presets))).grid(row=0, column=i, sticky="w")
     
-    def set_preset(self, preset_var:StringVar):
+    def set_preset(self, preset_var:StringVar, num_of_presets):
         pw, fq, amp = preset_var.get().split()
+        if pw not in self.attempted_presets:
+            self.attempted_presets.append(pw)
+        if len(self.attempted_presets) >= num_of_presets:
+            self.save_button.config(state="normal")
+
         self.dev.set_pulsewidth(int(pw))
         self.dev.set_frequency(int(fq))
         self.dev.set_amplitude(int(amp))
@@ -105,7 +120,11 @@ class NativeApp:
     #continue button which will save the results to a text file.
     def add_save_button(self):
         self.r +=1
-        Button(master=self.window, text="Save results", command=self.save_results_exit).grid(columnspan=2, row=self.r, sticky="s", pady=20)
+        if self.phase == 2:
+            self.save_button = Button(master=self.window, text="Save results", command=self.save_results_exit, state="disabled")
+            self.save_button.grid(columnspan=2, row=self.r, sticky="s", pady=20)
+        else:
+            Button(master=self.window, text="Save results", command=self.save_results_exit).grid(columnspan=2, row=self.r, sticky="s", pady=20)
 
     #Save params to output csv file (pulsewidth,frequency,amplitude)
     def save_results_exit(self):
@@ -140,6 +159,19 @@ def add_required_widgets(app:NativeApp, widget:str):
         v = app.add_multi_selection_widget()
         return v
 
+def get_presets(phase, widget=None):
+    if phase == 1 or widget == None:
+        return [(150,70,8),(50,50,15),(100,20,20)]
+    elif phase == 2:
+        if widget == "button":
+            return [(64, 29, 8), (78, 42, 10), (92, 56, 11), (116, 70, 12), (139, 85, 14)]
+        elif widget == "text":
+            return [(59, 20, 8), (78, 34, 9), (97, 49, 11), (118, 59, 12), (139, 70, 14)]
+        elif widget == "multi":
+            return [(50, 23, 8), (70, 36, 10), (89, 49, 11), (113, 59, 14), (137, 70, 16)]
+        elif widget == "radio":
+            return [(66, 20, 8), (81, 34, 9), (97, 47, 10), (115, 56, 12), (132, 66, 13)]
+
 def run(phase=1):
     user_id = uuid.uuid4()
     print(user_id)
@@ -151,11 +183,12 @@ def run(phase=1):
     test_app.add_title("Demonstation Window")
     test_app.add_button_widget()
     if phase == 1:
-        presets = [(150,70,8),(50,50,15),(100,20,20)] #Phase 1 presets (for seeding the dials)
+        presets = get_presets(phase) #Phase 1 presets (for seeding the dials)
         test_app.add_parameter_dials()
     elif phase == 2:
-        #Phase 2 presets based on analysis of phase 1 responses. These are fixed presets
-        presets = [(150,70,8),(50,50,15),(100,20,20)] 
+        #Phase 2 presets based on analysis of phase 1 responses. These are fixed presets. random for the demo window.
+        test_app.phase = 2
+        presets = get_presets(phase, "button") 
         test_app.add_preset_buttons(presets)
     test_app.add_save_button()
     test_app.run()
@@ -176,14 +209,27 @@ def run(phase=1):
             f.write(f"{datetime.now()},{str(user_id)}\n")
 
     elif phase == 2:
-        for widget in widgets:
+        wid_3 = widgets * 3
+        random.shuffle(wid_3)
+        for widget in wid_3:
+            presets = get_presets(phase, widget)
             random.shuffle(presets)
-            app = NativeApp(user_id, widget, result_dir="results2")
+            app = NativeApp(user_id, widget, result_dir="results2", phase=2)
             app.add_title("Electrotactile Feedback!")
             v = add_required_widgets(app, widget)
             app.add_preset_buttons(presets)
             app.add_save_button()
             app.run()
+
+        #TODO: Add another iteration where the user ranks their preference of presets.
+        app = NativeApp(user_id=None, phase=2)
+        app.edit_bg_colour('orange')
+        app.add_title("Please Rank Your Favourite Presets.")
+        app.add_button_widget()
+        presets = get_presets(2, "button")
+        app.add_preset_buttons(presets)
+        app.add_save_button()
+        app.run()
 
         with open("admin/Id_map_phase2.csv", "a") as f:
             f.write(f"{datetime.now()},{str(user_id)}\n")
