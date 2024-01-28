@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>3b9510ef-51e4-4dad-b2e1-c5364a052122</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>NativeApp.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,6 +22,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="main.py" />
+    <Compile Include="Phase3NativeApp.py" />
     <Compile Include="FESService.py">
       <SubType>Code</SubType>
     </Compile>
