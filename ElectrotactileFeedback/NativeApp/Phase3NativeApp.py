@@ -33,6 +33,7 @@ class Phase3NativeApp(NativeApp):
             else:
                 button = Button(frame, text=text, width=5, height=2, font=('Arial', 14),
                                 command=lambda t=text: self.numpad_click(t))
+            button.bind("<Button-1>", lambda e: self.dev.send_pulse())
             button.grid(row=row, column=col)
 
     #This function adds text to the screen with the given font size
