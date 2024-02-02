@@ -116,7 +116,7 @@ class NativeApp:
     #continue button which will save the results to a text file.
     def add_save_button(self):
         self.r +=1
-        if self.phase == 2:
+        if self.phase in [2, 3]:
             self.save_button = Button(master=self.window, text="Save results", command=self.save_results_exit, state="disabled")
             self.save_button.grid(columnspan=2, row=self.r, sticky="s", pady=20)
         else:

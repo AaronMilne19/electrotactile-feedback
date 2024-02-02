@@ -57,7 +57,6 @@ class FESService:
                 self.device.set_channel_frequency(channel, self.frequency)
                 self.device.set_channel_amplitude(channel, self.amplitude)
 
-        #self.device.reset() #TODO: Improve this as device.reset takes too long
         self.reset_settings()
     
     

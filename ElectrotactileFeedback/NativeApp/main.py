@@ -3,6 +3,7 @@ import itertools
 import random
 import uuid
 from NativeApp import NativeApp
+from Phase3NativeApp import Phase3NativeApp
 
 
 def add_required_widgets(app:NativeApp, widget:str):
@@ -93,23 +94,30 @@ def run_phase2(widgets, user_id):
     with open("admin/Id_map_phase2.csv", "a") as f:
         f.write(f"{datetime.now()},{str(user_id)}\n")
 
-def run_phase3():
-    pass
+def run_phase3(user_id):
+    app = Phase3NativeApp(user_id)
+    app.set_preset((100, 50, 10)) #TODO: Edit this to match presets from analysis
+    app.add_title("Electrotactile Feedback!")
+    app.add_random_number_input(False)
+    app.add_save_button()
+    app.run()
 
 def run(phase=1):
     user_id = uuid.uuid4()
     print(user_id)
     widgets = ["button", "text", "radio", "multi"]
+
     
-    run_test(phase)
-    if phase == 1:    
+    if phase == 1:
+        run_test(1)    
         run_phase1(widgets, user_id)
     elif phase == 2:
+        run_test(2)
         run_phase2(widgets, user_id)
     elif phase == 3:
-        run_phase3()
+        run_phase3(user_id)
 
 
 ###########################
 
-run(2) #change the argument here for diffent phase of experiment.
+run(3) #change the argument here for diffent phase of experiment.
