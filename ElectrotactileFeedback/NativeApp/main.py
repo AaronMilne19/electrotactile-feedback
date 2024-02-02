@@ -1,4 +1,3 @@
-from cmath import phase
 import datetime
 import itertools
 import random
@@ -96,26 +95,19 @@ def run_phase2(widgets, user_id):
         f.write(f"{datetime.now()},{str(user_id)}\n")
 
 def run_phase3(user_id):
-    #Run with keypad, and typing 10x each, record the time taken and the number of keys pressed.
-    iters = 10
-    phase_3_app(user_id, iters, True, (100, 50, 10))
-    phase_3_app(user_id, iters, True)
-    phase_3_app(user_id, iters, False, (100, 50, 10))
-    phase_3_app(user_id, iters, False)
-
-def phase_3_app(user_id, iters, keypad:bool, preset=(0,0,0)):
-    for i in range(iters):
-        app = Phase3NativeApp(user_id)
-        app.set_preset(preset) #TODO: Edit this to match presets from analysis
-        app.add_title("Electrotactile Feedback!")
-        app.add_random_number_input(keypad)
-        app.add_save_button()
-        app.run()
+    app = Phase3NativeApp(user_id)
+    app.set_preset((100, 50, 10)) #TODO: Edit this to match presets from analysis
+    app.add_title("Electrotactile Feedback!")
+    app.add_random_number_input(False)
+    app.add_save_button()
+    app.run()
 
 def run(phase=1):
     user_id = uuid.uuid4()
     print(user_id)
     widgets = ["button", "text", "radio", "multi"]
+
+    
     if phase == 1:
         run_test(1)    
         run_phase1(widgets, user_id)
