@@ -11,7 +11,8 @@
     <OutputPath>.</OutputPath>
     <Name>NativeApp</Name>
     <RootNamespace>NativeApp</RootNamespace>
-    <InterpreterId>MSBuild|env|C:\Users\aaron\OneDrive\Documents\Uni\Level 5\Individual Project\Repository\ElectrotactileFeedback\WidgetWebApp\WidgetWebApp.pyproj</InterpreterId>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,9 +36,6 @@
       <Project>{6baa2029-bcd3-497c-bb32-32929a200a3e}</Project>
       <Private>True</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <InterpreterReference Include="MSBuild|env|C:\Users\aaron\OneDrive\Documents\Uni\Level 5\Individual Project\Repository\ElectrotactileFeedback\WidgetWebApp\WidgetWebApp.pyproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="results\" />

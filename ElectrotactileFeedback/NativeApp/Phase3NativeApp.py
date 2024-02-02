@@ -2,8 +2,6 @@ import random
 from tkinter import *
 from tkinter import ttk
 from typing_extensions import override
-import tkdial as tkd
-from FESService import FESService
 from NativeApp import NativeApp
 
 class Phase3NativeApp(NativeApp):
