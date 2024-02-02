@@ -107,9 +107,9 @@ Phase 3 - Qualitative analysis of users performins simple tasts with and without
 def run_phase3(user_id):
     #Run with keypad, and typing 10x each, record the time taken and the number of keys pressed.
     iters = 10
-    phase_3_app(user_id, iters, True)
-    phase_3_app(user_id, iters, True, (100, 50, 10))
-    phase_3_app(user_id, iters, False)
+    #phase_3_app(user_id, iters, True)
+    #phase_3_app(user_id, iters, True, (100, 50, 10))
+    #phase_3_app(user_id, iters, False)
     phase_3_app(user_id, iters, False, (100, 50, 10))
 
 def phase_3_app(user_id, iters, keypad:bool, preset=(0,0,0)):

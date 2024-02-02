@@ -74,6 +74,8 @@ class Phase3NativeApp(NativeApp):
     
     #Event handler
     def handle_keypress(self, e):
+        if e.keysym in ['Left', 'Right', 'Up', 'Down']:
+            return "break"
         self.dev.send_pulse()
         self.verify_input(e.char)
 
@@ -85,8 +87,10 @@ class Phase3NativeApp(NativeApp):
             self.text = ttk.Entry(master=self.window, width=25, state="disabled")
         else:
             self.text = ttk.Entry(master=self.window, width=25)
+            self.text.focus_set()
             self.text.bind("<Key>", lambda e: self.handle_keypress(e))
-        self.text.grid(columnspan=2, row=self.r, padx=10, pady=20, sticky="n")
+            self.text.bind("<1>", "break")
+        self.text.grid(columnspan=2, row=self.r, padx=10, pady=20, sticky="n") 
 
     @override
     #Save results to csv file
