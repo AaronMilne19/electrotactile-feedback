@@ -53,6 +53,9 @@ def run_test(phase):
     test_app.add_save_button()
     test_app.run()
 
+"""
+Phase 1 - run app with various widgets and dials for users to tune until they find pulse appropriate.
+"""
 def run_phase1(widgets, user_id):
     presets = get_presets(1)
     combinations = list(itertools.product(widgets, presets))
@@ -69,6 +72,9 @@ def run_phase1(widgets, user_id):
     with open("admin/Id_map.csv", "a") as f:
         f.write(f"{datetime.now()},{str(user_id)}\n")
 
+"""
+Phase 2 - run app with various widgets and presets for users to try and choose their favourate for each widget.
+"""
 def run_phase2(widgets, user_id):
     wid_3 = widgets * 3
     random.shuffle(wid_3)
@@ -95,6 +101,9 @@ def run_phase2(widgets, user_id):
     with open("admin/Id_map_phase2.csv", "a") as f:
         f.write(f"{datetime.now()},{str(user_id)}\n")
 
+"""
+Phase 3 - Qualitative analysis of users performins simple tasts with and without electrotactile enabled.
+"""
 def run_phase3(user_id):
     #Run with keypad, and typing 10x each, record the time taken and the number of keys pressed.
     iters = 10
