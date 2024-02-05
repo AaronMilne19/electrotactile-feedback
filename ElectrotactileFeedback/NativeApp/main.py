@@ -88,7 +88,6 @@ def run_phase2(widgets, user_id):
         app.add_save_button()
         app.run()
 
-    #TODO: Add another iteration where the user ranks their preference of presets.
     app = NativeApp(user_id=None, phase=2)
     app.edit_bg_colour('orange')
     app.add_title("Please Rank Your Favourite Presets.")
@@ -107,19 +106,20 @@ Phase 3 - Qualitative analysis of users performins simple tasts with and without
 def run_phase3(user_id):
     #Run with keypad, and typing 10x each, record the time taken and the number of keys pressed.
     iters = 10
-    #phase_3_app(user_id, iters, True)
-    #phase_3_app(user_id, iters, True, (100, 50, 10))
-    #phase_3_app(user_id, iters, False)
-    phase_3_app(user_id, iters, False, (100, 50, 10))
+    phase_3_app(user_id, iters, True, "Numpad_NoTactile")
+    phase_3_app(user_id, iters, True, "Numpad_Tactile", (100, 50, 10))
+    phase_3_app(user_id, iters, False, "Text_NoTactile")
+    phase_3_app(user_id, iters, False, "Text_Tactile", (100, 50, 10))
 
-def phase_3_app(user_id, iters, keypad:bool, preset=(0,0,0)):
+def phase_3_app(user_id, iters, keypad:bool, descriptor, preset=(0,0,0)):
     for i in range(iters):
-        app = Phase3NativeApp(user_id)
+        app = Phase3NativeApp(user_id, descriptor=descriptor)
         app.set_preset(preset) #TODO: Edit this to match presets from analysis
         app.add_title("Electrotactile Feedback!")
         app.add_random_number_input(keypad)
         app.add_save_button()
         app.run()
+        print(app.presses, app.time)
 
 def run(phase=1):
     user_id = uuid.uuid4()

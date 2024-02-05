@@ -3,12 +3,15 @@ from tkinter import *
 from tkinter import ttk
 from typing_extensions import override
 from NativeApp import NativeApp
+import time
 
 class Phase3NativeApp(NativeApp):
 
     def __init__(self, user_id:str, descriptor:str=None, title="Electrotactile Feedback", geometry="600x400", result_dir="results3"):
         super().__init__(user_id=user_id, descriptor=descriptor, title=title, geometry=geometry, result_dir=result_dir, phase=3)
         self.text = None
+        self.presses = []
+        self.time = time.perf_counter()
 
     def set_preset(self, preset:tuple):
         pw, fq, amp = preset
@@ -52,6 +55,7 @@ class Phase3NativeApp(NativeApp):
         self.text.insert(0, new_str)
         self.verify_input()
         self.text.config(state='disabled')
+        self.presses.append(str(number))
 
     #backspace one character from the text box
     def backspace(self):
@@ -61,6 +65,7 @@ class Phase3NativeApp(NativeApp):
         self.text.delete(len(current) - 1)
         self.verify_input()
         self.text.config(state='disabled')
+        self.presses.append('\x08')
 
     #Verifies the input of the text box
     def verify_input(self,char=""):
@@ -78,6 +83,7 @@ class Phase3NativeApp(NativeApp):
             return "break"
         self.dev.send_pulse()
         self.verify_input(e.char)
+        self.presses.append(e.char)
 
     #Overrides existing text input widget to incorporate phase 3 functionality
     @override
@@ -96,9 +102,11 @@ class Phase3NativeApp(NativeApp):
     #Save results to csv file
     def save_results_exit(self):
         print("override works", self.user_id)
-        #if self.user_id != None:
-        #    with open(f"{self.result_dir}/{self.user_id}_{self.descriptor}.csv", "a") as f:
-        #        f.write(f"{self.dev.get_pulsewidth()},{self.dev.get_frequency()},{self.dev.get_amplitude()}\n")
+        self.time = time.perf_counter() - self.time
+        if self.user_id != None:
+            with open(f"{self.result_dir}/{self.user_id}_{self.descriptor}.csv", "a") as f:
+                p = " ".join(self.presses) 
+                f.write(f"{p},{self.time}\n")
         self.window.destroy()
 
     #Generates random number and gets users to type this number into the box
