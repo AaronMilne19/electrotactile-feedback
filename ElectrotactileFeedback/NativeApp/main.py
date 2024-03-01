@@ -1,5 +1,5 @@
 from cmath import phase
-import datetime
+from datetime import datetime
 import itertools
 import random
 import uuid
@@ -108,23 +108,28 @@ def run_phase3(user_id):
     iters = 10
     button_preset = (92, 56, 11)
     text_preset = (97, 49, 11)
-    phase_3_app(None, 1, True, None, title="Demonstartion Window")
+    phase_3_app(None, 1, True, None, title="Demonstartion Window", colour="yellow")
     phase_3_app(user_id, iters, True, "Numpad_NoTactile")
+    phase_3_app(None, 1, True, None, title="Demonstartion Window", preset=button_preset, colour="yellow")
     phase_3_app(user_id, iters, True, "Numpad_Tactile", button_preset)
+    phase_3_app(None, 1, False, None, title="Demonstartion Window", colour="yellow")
     phase_3_app(user_id, iters, False, "Text_NoTactile")
+    phase_3_app(None, 1, False, None, title="Demonstartion Window", preset=text_preset, colour="yellow")
     phase_3_app(user_id, iters, False, "Text_Tactile", text_preset)
+    
+    with open("admin/Id_map_phase3.csv", "a") as f:
+        f.write(f"{datetime.now()},{str(user_id)}\n")
 
-def phase_3_app(user_id, iters, keypad:bool, descriptor, preset=(0,0,0), title="Electrotactile Feedback!"):
+def phase_3_app(user_id, iters, keypad:bool, descriptor, preset=(0,0,0), title="Electrotactile Feedback!", colour=None):
     for i in range(iters):
         app = Phase3NativeApp(user_id, descriptor=descriptor)
+        if colour:
+            app.edit_bg_colour(colour)
         app.set_preset(preset)
         app.add_title(title)
         app.add_random_number_input(keypad)
         app.add_save_button()
         app.run()
-    
-    with open("admin/Id_map_phase3.csv", "a") as f:
-        f.write(f"{datetime.now()},{str(user_id)}\n")
 
 def run(phase=1):
     user_id = uuid.uuid4()
