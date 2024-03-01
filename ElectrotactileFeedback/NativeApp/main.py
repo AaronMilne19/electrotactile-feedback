@@ -106,16 +106,19 @@ Phase 3 - Qualitative analysis of users performins simple tasts with and without
 def run_phase3(user_id):
     #Run with keypad, and typing 10x each, record the time taken and the number of keys pressed.
     iters = 10
+    button_preset = (92, 56, 11)
+    text_preset = (97, 49, 11)
+    phase_3_app(None, 1, True, None, title="Demonstartion Window")
     phase_3_app(user_id, iters, True, "Numpad_NoTactile")
-    phase_3_app(user_id, iters, True, "Numpad_Tactile", (100, 50, 10))
+    phase_3_app(user_id, iters, True, "Numpad_Tactile", button_preset)
     phase_3_app(user_id, iters, False, "Text_NoTactile")
-    phase_3_app(user_id, iters, False, "Text_Tactile", (100, 50, 10))
+    phase_3_app(user_id, iters, False, "Text_Tactile", text_preset)
 
-def phase_3_app(user_id, iters, keypad:bool, descriptor, preset=(0,0,0)):
+def phase_3_app(user_id, iters, keypad:bool, descriptor, preset=(0,0,0), title="Electrotactile Feedback!"):
     for i in range(iters):
         app = Phase3NativeApp(user_id, descriptor=descriptor)
-        app.set_preset(preset) #TODO: Edit this to match presets from analysis
-        app.add_title("Electrotactile Feedback!")
+        app.set_preset(preset)
+        app.add_title(title)
         app.add_random_number_input(keypad)
         app.add_save_button()
         app.run()
