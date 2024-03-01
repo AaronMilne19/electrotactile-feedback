@@ -122,7 +122,9 @@ def phase_3_app(user_id, iters, keypad:bool, descriptor, preset=(0,0,0), title="
         app.add_random_number_input(keypad)
         app.add_save_button()
         app.run()
-        print(app.presses, app.time)
+    
+    with open("admin/Id_map_phase3.csv", "a") as f:
+        f.write(f"{datetime.now()},{str(user_id)}\n")
 
 def run(phase=1):
     user_id = uuid.uuid4()

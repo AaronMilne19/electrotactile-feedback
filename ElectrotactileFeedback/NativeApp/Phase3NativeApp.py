@@ -101,7 +101,6 @@ class Phase3NativeApp(NativeApp):
     @override
     #Save results to csv file
     def save_results_exit(self):
-        print("override works", self.user_id)
         self.time = time.perf_counter() - self.time
         if self.user_id != None:
             with open(f"{self.result_dir}/{self.user_id}_{self.descriptor}.csv", "a") as f:
