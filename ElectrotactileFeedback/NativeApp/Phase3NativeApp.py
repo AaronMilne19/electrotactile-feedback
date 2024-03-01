@@ -71,9 +71,9 @@ class Phase3NativeApp(NativeApp):
     def verify_input(self,char=""):
         try:
             if char == '\x08':
-                self.save_button.config(state='normal') if int(self.text.get()[:-1]) == self.num else self.save_button.config(state='disabled')
+                self.save_button.config(state='normal') if str(self.text.get()[:-1]) == str(self.num) else self.save_button.config(state='disabled')
             else:
-                self.save_button.config(state='normal') if int(self.text.get() + char) == self.num else self.save_button.config(state='disabled')
+                self.save_button.config(state='normal') if str(self.text.get() + char) == str(self.num) else self.save_button.config(state='disabled')
         except ValueError:
             pass
     
@@ -111,9 +111,15 @@ class Phase3NativeApp(NativeApp):
 
     #Generates random number and gets users to type this number into the box
     def add_random_number_input(self, numpad:bool):
-        self.num = random.randint(100000, 999999)
-        self.add_message(f"Please enter the number {self.num}", 12)
-        self.add_text_widget(numpad)
         if numpad:
+            self.num = random.randint(100000, 999999)
+            self.add_message(f"Please enter: {self.num}", 12)
+            self.add_text_widget(numpad)
             self.window.geometry("600x600")
-            self.add_numpad()        
+            self.add_numpad()
+        else:
+            with open("phrases/phrases2.txt") as f:
+                phrases = f.readlines()
+            self.num = random.choice(phrases).strip()
+            self.add_message(f"Please enter: '{self.num}'", 12)
+            self.add_text_widget(numpad)
