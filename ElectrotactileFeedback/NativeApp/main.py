@@ -108,13 +108,13 @@ def run_phase3(user_id):
     iters = 10
     button_preset = (92, 56, 11)
     text_preset = (97, 49, 11)
-    phase_3_app(None, 1, True, None, title="Demonstartion Window", colour="yellow")
+    phase_3_app(None, 1, True, None, title="Demonstration Window", colour="yellow")
     phase_3_app(user_id, iters, True, "Numpad_NoTactile")
-    phase_3_app(None, 1, True, None, title="Demonstartion Window", preset=button_preset, colour="yellow")
+    phase_3_app(None, 1, True, None, title="Demonstration Window", preset=button_preset, colour="yellow")
     phase_3_app(user_id, iters, True, "Numpad_Tactile", button_preset)
-    phase_3_app(None, 1, False, None, title="Demonstartion Window", colour="yellow")
+    phase_3_app(None, 1, False, None, title="Demonstration Window", colour="yellow")
     phase_3_app(user_id, iters, False, "Text_NoTactile")
-    phase_3_app(None, 1, False, None, title="Demonstartion Window", preset=text_preset, colour="yellow")
+    phase_3_app(None, 1, False, None, title="Demonstration Window", preset=text_preset, colour="yellow")
     phase_3_app(user_id, iters, False, "Text_Tactile", text_preset)
     
     with open("admin/Id_map_phase3.csv", "a") as f:
