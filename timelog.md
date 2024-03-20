@@ -35,3 +35,7 @@
 ### WC 11th December
 - 12 Hours: performing user experiments
 - 20 Hours: Performing analysis on the results.
+
+### WC 18th December
+
+### 
