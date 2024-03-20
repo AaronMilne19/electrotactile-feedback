@@ -12,7 +12,8 @@
     <OutputPath>.</OutputPath>
     <Name>FESDriver</Name>
     <RootNamespace>DeviceDriver</RootNamespace>
-    <InterpreterId>MSBuild|env|C:\Users\aaron\OneDrive\Documents\Uni\Level 5\Individual Project\Repository\ElectrotactileFeedback\WidgetWebApp\WidgetWebApp.pyproj</InterpreterId>
+	<InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
