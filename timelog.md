@@ -37,5 +37,50 @@
 - 20 Hours: Performing analysis on the results.
 
 ### WC 18th December
+- 5 Hours: Running evaluation a few extra times.
 
-### 
+### WC 25th December
+- 0 Hours: Holliday
+
+### WC 01st January
+- 8 Hours: Continued analysis of the first studies results, produced charts.
+- 8 Hours: Making code changes to application ready for second evaluation.
+
+### WC 08th January
+- 10 Hours: Making code changes to application for second application
+
+### WC 15th January
+- 15 Hours: running second evaluation
+
+### WC 22nd January
+- 10 hours: Analysing results of second evaluation/producing charts etc
+
+### WC 29th January
+- 10 Hours: Preparing app for final evaluation.
+
+### WC 05th February
+- 10 Hours: Preparing app for final evaluation.
+
+### WC 12th February
+- 10 Hours: Preparing app for final evaluation.
+- 5 hours: Begin dissertation writing (headers etc).
+
+### WC 19th February
+- 15 Hours: Dissertation writing
+
+### WC 26th February
+- 15 Hours: Dissertation writing
+
+### WC 04th March
+- 12 Hours: running final evaluation.
+- 5 Hours: Processing results of final evaluation.
+- 3 Hours: Dissertation writing.
+
+### WC 11th March
+- 5 Hours: Processing results of final evaluation.
+- 25 Hours: Dissertation writing.
+
+### WC 18th March
+- 30 Hours: Finishing dissertation
+- 8 Hours: Planning and recording presentation video
+- 5 Hours: Admin for submission
