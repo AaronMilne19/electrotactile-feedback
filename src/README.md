@@ -24,7 +24,7 @@ Mode argument can equal either 1, 2 or 3, depending on the evaluation you would 
 
 ## Build instructions
 
-No official release/executable is available/deployed for this code, however follow the instructions below to run the application locally.
+No official release/executable is available/deployed for this code, however, follow the instructions below to run the application locally.
 
 ### Requirements
 
