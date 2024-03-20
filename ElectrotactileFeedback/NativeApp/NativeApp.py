@@ -14,7 +14,7 @@ class NativeApp:
         self.window = Tk()
         self.window.geometry(geometry)
         self.window.title(title)
-        self.result_dir = result_dir
+        self.result_dir = "../../data/raw/" + result_dir
         self.phase = phase
         self.attempted_presets=[]
 
